@@ -69,6 +69,12 @@ public class InvocationPlanTest {
                 .hasShadowImplementation()).isFalse();
     }
 
+    @Test public void shouldDelegateToRealMethodsWhenClassIsUnknown() throws Exception {
+        InvocationPlan invocationPlan = new InvocationPlan(ShadowMap.EMPTY, View.class, ShadowSubView.class, "show", false);
+        assertThat(invocationPlan.hasShadowImplementation()).isFalse();
+        assertThat(invocationPlan.shouldDelegateToRealMethodWhenMethodShadowIsMissing()).isTrue();
+    }
+
     public static class View {
         public void show() {
         }

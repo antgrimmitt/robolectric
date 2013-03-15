@@ -44,6 +44,11 @@ class InvocationPlan {
         this.paramTypes = paramTypes;
 
         this.classLoader = clazz.getClassLoader();
+
+        if (shadowConfig == null) {
+            this.hasShadowImplementation = false;
+            return;
+        }
         this.hasShadowImplementation = prepare();
     }
 
@@ -208,6 +213,8 @@ class InvocationPlan {
     }
 
     public boolean shouldDelegateToRealMethodWhenMethodShadowIsMissing() {
+        if (shadowConfig == null) return true;
+
         String className = clazz.getName();
         ShadowConfig shadowConfig = shadowMap.get(className);
         int dollarIndex;
