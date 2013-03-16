@@ -17,6 +17,7 @@ import android.view.ViewParent;
 import android.view.ViewTreeObserver;
 import android.view.animation.Animation;
 import org.robolectric.Robolectric;
+import org.robolectric.bytecode.RobolectricInternals;
 import org.robolectric.internal.Implementation;
 import org.robolectric.internal.Implements;
 import org.robolectric.internal.RealObject;
@@ -119,6 +120,8 @@ public class ShadowView {
         if (attributeSet != null) {
             applyAttributes();
         }
+
+        RobolectricInternals.getConstructor(View.class, realView, Context.class).invoke(context);
     }
 
     public void applyAttributes() {

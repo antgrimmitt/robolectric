@@ -2,9 +2,13 @@ package org.robolectric.bytecode;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.robolectric.RobolectricTestRunner;
 import org.robolectric.internal.Implements;
+import org.robolectric.internal.Instrument;
+import org.robolectric.util.Transcript;
 
 import static org.fest.assertions.api.Assertions.assertThat;
+import static org.fest.reflect.core.Reflection.field;
 import static org.fest.reflect.core.Reflection.method;
 
 public class InvocationPlanTest {
@@ -70,13 +74,27 @@ public class InvocationPlanTest {
     }
 
     @Test public void shouldDelegateToRealMethodsWhenClassIsUnknown() throws Exception {
-        InvocationPlan invocationPlan = new InvocationPlan(ShadowMap.EMPTY, View.class, ShadowSubView.class, "show", false);
+        AsmInstrumentingClassLoader asmInstrumentingClassLoader = new AsmInstrumentingClassLoader(new Setup());
+        RobolectricTestRunner.injectClassHandler(asmInstrumentingClassLoader, new InstrumentingClassLoaderTestBase.MyClassHandler(new Transcript()));
+
+        Class<?> viewClass = asmInstrumentingClassLoader.loadClass(View.class.getName());
+        InvocationPlan invocationPlan = new InvocationPlan(ShadowMap.EMPTY, viewClass, ShadowSubView.class, "setText", false, String.class.getName());
         assertThat(invocationPlan.hasShadowImplementation()).isFalse();
         assertThat(invocationPlan.shouldDelegateToRealMethodWhenMethodShadowIsMissing()).isTrue();
+        Object view = viewClass.newInstance();
+        invocationPlan.callOriginal(view, new Object[]{"value"});
+        assertThat(field("text").ofType(String.class).in(view).get()).isEqualTo("value");
     }
 
+    @Instrument
     public static class View {
+        private String text;
+
         public void show() {
+        }
+
+        public void setText(String text) {
+            this.text = text;
         }
 
         @Override public boolean equals(Object obj) {

@@ -20,7 +20,12 @@ public class ShadowSystemProperties {
     @Implementation
     public static String get(String key) {
       complain("SystemProperties.get(" + key + ")");
-      return VALUES.get(key).toString();
+        Object o = VALUES.get(key);
+        if (o == null) {
+            System.err.println("WARNING: no system properties value for " + key);
+            return null;
+        }
+        return o.toString();
     }
 
     @Implementation

@@ -53,7 +53,7 @@ public class AsmInstrumentingClassLoader extends ClassLoader implements Opcodes,
     private static final Type STRING_TYPE = getType(String.class);
     private static final Type ROBOLECTRIC_INTERNALS_TYPE = Type.getType(RobolectricInternals.class);
 
-    private static boolean debug = false;
+    private static boolean debug = true;
 
     private final Setup setup;
     private final URLClassLoader urls;

@@ -179,7 +179,7 @@ public class RobolectricTestRunner extends BlockJUnit4ClassRunner {
         return true;
     }
 
-    private void injectClassHandler(ClassLoader robolectricClassLoader, ClassHandler classHandler) {
+    public static void injectClassHandler(ClassLoader robolectricClassLoader, ClassHandler classHandler) {
         try {
             String className = RobolectricInternals.class.getName();
             Class<?> robolectricInternalsClass = robolectricClassLoader.loadClass(className);

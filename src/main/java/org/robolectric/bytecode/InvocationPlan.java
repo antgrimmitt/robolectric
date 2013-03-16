@@ -23,7 +23,7 @@ class InvocationPlan {
     private final ShadowConfig shadowConfig;
     private final ClassLoader classLoader;
     private final boolean hasShadowImplementation;
-    private Class<?>[] paramClasses;
+    private final Class<?>[] paramClasses;
     private Class<?> declaredShadowClass;
     private Method method;
 
@@ -44,6 +44,7 @@ class InvocationPlan {
         this.paramTypes = paramTypes;
 
         this.classLoader = clazz.getClassLoader();
+        paramClasses = getParamClasses();
 
         if (shadowConfig == null) {
             this.hasShadowImplementation = false;
@@ -83,8 +84,6 @@ class InvocationPlan {
     }
 
     public boolean prepare() {
-        paramClasses = getParamClasses();
-
         Class<?> originalClass = ShadowWrangler.loadClass(clazz.getName(), classLoader);
 
         declaredShadowClass = findDeclaredShadowClassForMethod(originalClass, methodName, paramClasses);
@@ -204,7 +203,8 @@ class InvocationPlan {
 
     public Object callOriginal(Object instance, Object[] params) throws InvocationTargetException, IllegalAccessException {
         try {
-            Method method = clazz.getDeclaredMethod(RobolectricInternals.directMethodName(clazz.getName(), methodName), paramClasses);
+            String directMethodName = RobolectricInternals.directMethodName(clazz.getName(), methodName);
+            Method method = clazz.getDeclaredMethod(directMethodName, paramClasses);
             method.setAccessible(true);
             return method.invoke(instance, params);
         } catch (NoSuchMethodException e) {

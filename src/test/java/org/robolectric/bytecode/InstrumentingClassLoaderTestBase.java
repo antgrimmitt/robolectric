@@ -2,6 +2,7 @@ package org.robolectric.bytecode;
 
 import android.os.Build;
 import org.junit.Test;
+import org.robolectric.RobolectricTestRunner;
 import org.robolectric.bytecode.testing.AChild;
 import org.robolectric.bytecode.testing.AClassThatCallsAMethodReturningAForgettableClass;
 import org.robolectric.bytecode.testing.AClassThatRefersToAForgettableClass;
@@ -41,8 +42,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import static org.fest.reflect.core.Reflection.staticField;
 import static org.fest.assertions.api.Assertions.assertThat;
+import static org.fest.reflect.core.Reflection.staticField;
 import static org.junit.Assert.*;
 import static org.robolectric.Robolectric.directlyOn;
 
@@ -539,22 +540,8 @@ abstract public class InstrumentingClassLoaderTestBase { // don't end in "Test" 
         if (classLoader == null) {
             classLoader = createClassLoader(new Setup());
         }
-        injectClassHandler(classLoader, classHandler);
+        RobolectricTestRunner.injectClassHandler(classLoader, classHandler);
         return classLoader.loadClass(clazz.getName());
-    }
-
-    private static void injectClassHandler(ClassLoader classLoader, ClassHandler classHandler) {
-        try {
-            Field field = classLoader.loadClass(RobolectricInternals.class.getName()).getDeclaredField("classHandler");
-            field.setAccessible(true);
-            field.set(null, classHandler);
-        } catch (NoSuchFieldException e) {
-            throw new RuntimeException(e);
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     private static class MethodInterceptingSetup extends Setup {

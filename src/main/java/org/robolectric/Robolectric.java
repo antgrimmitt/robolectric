@@ -176,6 +176,7 @@ import org.robolectric.bytecode.RobolectricInternals;
 import org.robolectric.bytecode.ShadowWrangler;
 import org.robolectric.res.ResourceLoader;
 import org.robolectric.shadows.HttpResponseGenerator;
+import android.os.RoboVibrator;
 import org.robolectric.shadows.ShadowAbsListView;
 import org.robolectric.shadows.ShadowAbsSeekBar;
 import org.robolectric.shadows.ShadowAccountManager;
@@ -340,7 +341,6 @@ import org.robolectric.shadows.ShadowTranslateAnimation;
 import org.robolectric.shadows.ShadowTypedArray;
 import org.robolectric.shadows.ShadowTypeface;
 import org.robolectric.shadows.ShadowUriMatcher;
-import org.robolectric.shadows.ShadowVibrator;
 import org.robolectric.shadows.ShadowVideoView;
 import org.robolectric.shadows.ShadowView;
 import org.robolectric.shadows.ShadowViewAnimator;
@@ -1083,8 +1083,8 @@ public class Robolectric {
         return (ShadowViewGroup) shadowOf_(instance);
     }
 
-    public static ShadowVibrator shadowOf(Vibrator instance) {
-        return (ShadowVibrator) shadowOf_(instance);
+    public static RoboVibrator shadowOf(Vibrator instance) {
+        return (RoboVibrator) shadowOf_(instance);
     }
 
     public static ShadowVideoView shadowOf(VideoView instance) {

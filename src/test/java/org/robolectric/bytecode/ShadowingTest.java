@@ -221,7 +221,7 @@ public class ShadowingTest {
         assertThat(e.getMessage()).isEqualTo("already expecting a direct call on <class android.view.View> but here's a new request for <class android.view.View>");
     }
 
-    @Test
+    @Test @Config(shadows = ClassWithSomeConstructors.class)
     public void shouldGenerateSeparatedConstructorBodies() throws Exception {
         ClassWithSomeConstructors o = new ClassWithSomeConstructors("my name");
         assertNull(o.name);
