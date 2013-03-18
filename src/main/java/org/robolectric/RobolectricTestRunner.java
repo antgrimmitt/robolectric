@@ -145,7 +145,8 @@ public class RobolectricTestRunner extends BlockJUnit4ClassRunner {
         URL[] urls = artifactUrls(realAndroidDependency("android-base"),
                 realAndroidDependency("android-kxml2"),
                 realAndroidDependency("android-luni"),
-                createDependency("org.json", "json", "20080701", "jar", null)
+                createDependency("org.json", "json", "20080701", "jar", null),
+                createDependency("org.ccil.cowan.tagsoup", "tagsoup", "1.2", "jar", null)
         );
         ClassLoader robolectricClassLoader;
         if (useAsm()) {

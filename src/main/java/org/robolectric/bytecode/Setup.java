@@ -2,6 +2,7 @@ package org.robolectric.bytecode;
 
 import android.R;
 import android.net.Uri__FromAndroid;
+import android.text.TextUtils;
 import org.robolectric.AndroidManifest;
 import org.robolectric.RobolectricBase;
 import org.robolectric.RobolectricContext;
@@ -84,10 +85,10 @@ public class Setup {
             return false;
         }
 
-        if (isFromAndroidSdk(classInfo)) {
-            return true;
-        }
-
+        String name = classInfo.getName();
+        if (name.startsWith("android.text.") && name.contains("Span")) return false;
+        if (name.equals(TextUtils.class.getName())) return false;
+        if (isFromAndroidSdk(classInfo)) return true;
         return false;
     }
 

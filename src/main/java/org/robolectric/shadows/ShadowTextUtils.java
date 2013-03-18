@@ -1,5 +1,6 @@
 package org.robolectric.shadows;
 
+import android.text.Spanned;
 import android.text.TextPaint;
 import android.text.TextUtils;
 import org.robolectric.internal.Implementation;
@@ -101,5 +102,10 @@ public class ShadowTextUtils {
             }
         }
         return sb.toString();
+    }
+
+    @Implementation
+    public static <T> T[] removeEmptySpans(T[] spans, Spanned spanned, Class<T> klass) {
+        return spans;
     }
 }
