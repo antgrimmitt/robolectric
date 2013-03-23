@@ -12,6 +12,7 @@ public class DefaultTestLifecycle implements TestLifecycle {
      * @param method the test method about to be run
      */
     public void beforeTest(final Method method) {
+        System.out.println(method);
     }
 
     /**
